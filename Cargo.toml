@@ -14,8 +14,3 @@ rtt-target = "0.6.2"
 [dependencies.cortex-m]
 version = "0.7.7"
 features = ["critical-section-single-core"]
-
-[dependencies.num-traits]
-version = "*"
-default-features = false
-features = ["libm"]
