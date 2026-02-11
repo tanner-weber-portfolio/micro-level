@@ -84,17 +84,25 @@ fn main() -> ! {
 /// Takes 3 mG values (-500mG to 500mG).
 /// Returns the LED grid with a single lit up cell.
 fn get_bubble_pos_course(x: i32, y: i32, z: i32) -> [[u8; 5]; 5] {
-    if z > 0
-        || !(COURSE_MIN_M_G..=COURSE_MAX_M_G).contains(&x)
-        || !(COURSE_MIN_M_G..=COURSE_MAX_M_G).contains(&y)
-    {
+    if z > 0 {
         return [[0u8; 5]; 5];
     }
     let mut leds = [[0u8; 5]; 5];
-    let pos_y = (-x / 200 + 2) as usize;
-    let pos_x = (y / 200 + 2) as usize;
-    leds[pos_x][pos_y] = 1;
+    let mut pos_y = (-x / 200 + 2) as usize;
+    let mut pos_x = (y / 200 + 2) as usize;
 
+    if x > COURSE_MAX_M_G {
+        pos_y = 0;
+    } else if x < COURSE_MIN_M_G {
+        pos_y = 4;
+    }
+    if y > COURSE_MAX_M_G {
+        pos_x = 4;
+    } else if y < COURSE_MIN_M_G {
+        pos_x = 0;
+    }
+
+    leds[pos_x][pos_y] = 1;
     leds
 }
 
@@ -102,16 +110,24 @@ fn get_bubble_pos_course(x: i32, y: i32, z: i32) -> [[u8; 5]; 5] {
 /// Takes 3 mG values (-50mG to 50mG).
 /// Returns the LED grid with a single lit up cell.
 fn get_bubble_pos_fine(x: i32, y: i32, z: i32) -> [[u8; 5]; 5] {
-    if z > 0
-        || !(FINE_MIN_M_G..=FINE_MAX_M_G).contains(&x)
-        || !(FINE_MIN_M_G..=FINE_MAX_M_G).contains(&y)
-    {
+    if z > 0 {
         return [[0u8; 5]; 5];
     }
     let mut leds = [[0u8; 5]; 5];
-    let pos_y = (-x / 20 + 2) as usize;
-    let pos_x = (y / 20 + 2) as usize;
-    leds[pos_x][pos_y] = 1;
+    let mut pos_y = (-x / 20 + 2) as usize;
+    let mut pos_x = (y / 20 + 2) as usize;
 
+    if x > FINE_MAX_M_G {
+        pos_y = 0;
+    } else if x < FINE_MIN_M_G {
+        pos_y = 4;
+    }
+    if y > FINE_MAX_M_G {
+        pos_x = 4;
+    } else if y < FINE_MIN_M_G {
+        pos_x = 0;
+    }
+
+    leds[pos_x][pos_y] = 1;
     leds
 }
