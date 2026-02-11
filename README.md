@@ -2,11 +2,27 @@
 
 Tanner Weber 2026
 
-# Build and Run
+This program uses the accelerometer from the LSM303AGR on the Microbit to 
+light up a single cell on the 5x5 LED grid like a bubble level.
+
+# 🚀 Build and Run
 
 ```cargo embed --release```
 
-# Writeup
+# 📖 Writeup
+
+My implementation uses the LSM303AGR crate to access the accelerometer values.
+The x, y, and z values are obtained each frame (200ms), then used to 
+calculate which cell on the 5x5 grid to light up. There is a course mode and 
+fine mode that can be switched to by pressing the A and B buttons on the 
+Microbit. I put the calculations for each mode in their own functions.
+
+I initially tried to not use the LSM303AGR crate and just use the i2c read 
+and write methods, because I wanted to get better at working with the LSM303AGR 
+datasheet, but it was a pain to set up and convert the values and deal with 
+a bunch of constants.
+
+Each frame, the accelerometer values and LED grid values are printed.
 
 # License
 
