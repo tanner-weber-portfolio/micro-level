@@ -81,7 +81,7 @@ fn main() -> ! {
 }
 
 /// Calculates the position of the bubble on the 5x5 LED grid.
-/// Takes 3 mG values (-500mG to 500mG) directly from lsm303agr crate function 
+/// Takes 3 mG values (-500mG to 500mG) directly from lsm303agr crate function.
 /// Returns the LED grid with a single lit up cell.
 fn get_bubble_pos_course(x: i32, y: i32, z: i32) -> [[u8; 5]; 5] {
     let (x, y, z) = convert_axes(x, y, z);
@@ -92,15 +92,11 @@ fn get_bubble_pos_course(x: i32, y: i32, z: i32) -> [[u8; 5]; 5] {
     let mut pos_x = (x as f64 / 200_f64 + 2.5) as usize;
     let mut pos_y = (y as f64 / 200_f64 + 2.5) as usize;
 
-    if x > COURSE_MAX_M_G {
-        pos_x = 4;
-    } else if x < COURSE_MIN_M_G {
-        pos_x = 0;
+    if pos_x > leds.len() {
+        pos_x = leds.len();
     }
-    if y > COURSE_MAX_M_G {
-        pos_y = 4;
-    } else if y < COURSE_MIN_M_G {
-        pos_y = 0;
+    if pos_y > leds.len() {
+        pos_y = leds.len();
     }
 
     leds[pos_x][pos_y] = 1;
@@ -119,15 +115,11 @@ fn get_bubble_pos_fine(x: i32, y: i32, z: i32) -> [[u8; 5]; 5] {
     let mut pos_x = (x as f64 / 20_f64 + 2.5) as usize;
     let mut pos_y = (y as f64 / 20_f64 + 2.5) as usize;
 
-    if x > FINE_MAX_M_G {
-        pos_x = 4;
-    } else if x < FINE_MIN_M_G {
-        pos_x = 0;
+    if pos_x > leds.len() {
+        pos_x = leds.len();
     }
-    if y > FINE_MAX_M_G {
-        pos_y = 4;
-    } else if y < FINE_MIN_M_G {
-        pos_y = 0;
+    if pos_y > leds.len() {
+        pos_y = leds.len();
     }
 
     leds[pos_x][pos_y] = 1;
