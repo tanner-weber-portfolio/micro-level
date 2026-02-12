@@ -24,10 +24,6 @@ enum State {
 }
 
 const FRAMETIME_MS: u32 = 200;
-const COURSE_MIN_M_G: i32 = -500;
-const COURSE_MAX_M_G: i32 = 500;
-const FINE_MIN_M_G: i32 = -50;
-const FINE_MAX_M_G: i32 = 50;
 
 #[entry]
 fn main() -> ! {
