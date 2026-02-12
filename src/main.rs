@@ -85,16 +85,9 @@ fn get_bubble_pos_course(x: i32, y: i32, z: i32) -> [[u8; 5]; 5] {
         return [[0u8; 5]; 5];
     }
     let mut leds = [[0u8; 5]; 5];
-    let mut pos_x = (x as f64 / 200_f64 + 2.5) as usize;
-    let mut pos_y = (y as f64 / 200_f64 + 2.5) as usize;
     let max_index = leds.len() - 1;
-
-    if pos_x > max_index {
-        pos_x = max_index;
-    }
-    if pos_y > max_index {
-        pos_y = max_index;
-    }
+    let pos_x = ((x as f64 / 200_f64 + 2.5) as usize).clamp(0, max_index);
+    let pos_y = ((y as f64 / 200_f64 + 2.5) as usize).clamp(0, max_index);
 
     leds[pos_x][pos_y] = 1;
     leds
@@ -109,16 +102,9 @@ fn get_bubble_pos_fine(x: i32, y: i32, z: i32) -> [[u8; 5]; 5] {
         return [[0u8; 5]; 5];
     }
     let mut leds = [[0u8; 5]; 5];
-    let mut pos_x = (x as f64 / 20_f64 + 2.5) as usize;
-    let mut pos_y = (y as f64 / 20_f64 + 2.5) as usize;
     let max_index = leds.len() - 1;
-
-    if pos_x > max_index {
-        pos_x = max_index;
-    }
-    if pos_y > max_index {
-        pos_y = max_index;
-    }
+    let pos_x = ((x as f64 / 20_f64 + 2.5) as usize).clamp(0, max_index);
+    let pos_y = ((y as f64 / 20_f64 + 2.5) as usize).clamp(0, max_index);
 
     leds[pos_x][pos_y] = 1;
     leds
