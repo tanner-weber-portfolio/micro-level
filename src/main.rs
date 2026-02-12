@@ -81,25 +81,26 @@ fn main() -> ! {
 }
 
 /// Calculates the position of the bubble on the 5x5 LED grid.
-/// Takes 3 mG values (-500mG to 500mG).
+/// Takes 3 mG values (-500mG to 500mG) directly from lsm303agr crate function 
 /// Returns the LED grid with a single lit up cell.
 fn get_bubble_pos_course(x: i32, y: i32, z: i32) -> [[u8; 5]; 5] {
-    if z > 0 {
+    let (x, y, z) = convert_axes(x, y, z);
+    if z < 0 {
         return [[0u8; 5]; 5];
     }
     let mut leds = [[0u8; 5]; 5];
-    let mut pos_y = (-x / 200 + 2) as usize;
-    let mut pos_x = (y / 200 + 2) as usize;
+    let mut pos_x = (x as f64 / 200_f64 + 2.5) as usize;
+    let mut pos_y = (y as f64 / 200_f64 + 2.5) as usize;
 
     if x > COURSE_MAX_M_G {
-        pos_y = 0;
+        pos_x = 4;
     } else if x < COURSE_MIN_M_G {
-        pos_y = 4;
+        pos_x = 0;
     }
     if y > COURSE_MAX_M_G {
-        pos_x = 4;
+        pos_y = 4;
     } else if y < COURSE_MIN_M_G {
-        pos_x = 0;
+        pos_y = 0;
     }
 
     leds[pos_x][pos_y] = 1;
@@ -107,27 +108,36 @@ fn get_bubble_pos_course(x: i32, y: i32, z: i32) -> [[u8; 5]; 5] {
 }
 
 /// Calculates the position of the bubble on the 5x5 LED grid.
-/// Takes 3 mG values (-50mG to 50mG).
+/// Takes 3 mG values (-50mG to 50mG) directly from lsm303agr crate function.
 /// Returns the LED grid with a single lit up cell.
 fn get_bubble_pos_fine(x: i32, y: i32, z: i32) -> [[u8; 5]; 5] {
-    if z > 0 {
+    let (x, y, z) = convert_axes(x, y, z);
+    if z < 0 {
         return [[0u8; 5]; 5];
     }
     let mut leds = [[0u8; 5]; 5];
-    let mut pos_y = (-x / 20 + 2) as usize;
-    let mut pos_x = (y / 20 + 2) as usize;
+    let mut pos_x = (x as f64 / 20_f64 + 2.5) as usize;
+    let mut pos_y = (y as f64 / 20_f64 + 2.5) as usize;
 
     if x > FINE_MAX_M_G {
-        pos_y = 0;
+        pos_x = 4;
     } else if x < FINE_MIN_M_G {
-        pos_y = 4;
+        pos_x = 0;
     }
     if y > FINE_MAX_M_G {
-        pos_x = 4;
+        pos_y = 4;
     } else if y < FINE_MIN_M_G {
-        pos_x = 0;
+        pos_y = 0;
     }
 
     leds[pos_x][pos_y] = 1;
     leds
+}
+
+/// Converts the 3 axes from the lsm303agr crate acceleration() and xyz_mg()
+/// functions and flips the axes to match the microbit board, such that the
+/// the top of the board is the LED grid and the axes correspond to a 2D array
+/// representing the LED grid.
+fn convert_axes(x: i32, y: i32, z: i32) -> (i32, i32, i32) {
+    (y, -x, -z)
 }
